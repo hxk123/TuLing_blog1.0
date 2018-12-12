@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block lunbo %}
+    <div class="picshow">
+      <ul>
+        <li><a href="javascript:;"><i><img src={% static 'blog/images/b01.jpg' %}></i>
+          <div class="font">
+            <h3>个人博客《早安》</h3>
+          </div>
+          </a></li>
+        <li><a href="javascript:;"><i><img src={% static 'blog/images/b02.jpg' %}></i>
+          <div class="font">
+            <h3>个人博客《早安》</h3>
+          </div>
+          </a></li>
+        <li><a href="javascript:;"><i><img src={% static 'blog/images/b03.jpg' %}></i>
+          <div class="font">
+            <h3>个人博客《早安》</h3>
+          </div>
+          </a></li>
+        <li><a href="javascript:;"><i><img src={% static 'blog/images/b04.jpg' %}></i>
+          <div class="font">
+            <h3>个人博客《早安》</h3>
+          </div>
+          </a></li>
+        <li><a href="javascript:;"><i><img src={% static 'blog/images/b05.jpg' %}></i>
+          <div class="font">
+            <h3>个人博客《早安》</h3>
+          </div>
+          </a></li>
+      </ul>
+    </div>
+{% endblock lunbo %}
+
+<!-- 文章列表 -->
+{% block main %}
+    <div class="blogs">
+        {% for post in post_list %}
+            <li> <span class="blogpic"><a href="{{ post.get_absolute_url }}"><img src={% static 'blog/images/text01.jpg' %}></a></span>
+                <h3 class="blogtitle"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                <div class="bloginfo">
+                    <p>{{ post.excerpt }}...</p>
+                </div>
+            <div class="autor"><span class="lm">
+            {% for tag in post.tags.all %}
+                <a href="{% url 'blog:tag' tag.pk %}" target="_blank" class="classname">
+                    {{ tag.name }}
+                </a>
+            {% endfor %}
+            </span>
+                <span class="dtime">{{ post.created_time }}</span><span class="viewnum">浏览（<a href="javascript:;">{{ post.views }}</a>）
+                </span><span class="readmore">
+                    <a href="{{ post.get_absolute_url }}">阅读原文</a></span>
+            </div>
+            </li>
+        {% empty %}
+            <div class="blogtitle">暂时还没有发布的文章！</div>
+        {% endfor %}
+
+{#    分页功能    #}
+    {% if is_paginated %}
+        <div class="pagelist">
+          {% if first %}
+            <a title="Total record" href="?page=1">首页</a>
+          {% endif %}
+          {% if left %}
+            {% if left_has_more %}
+                <span>...</span>
+            {% endif %}
+            {% for i in left %}
+                <a href="?page={{ i }}">{{ i }}</a>
+            {% endfor %}
+          {% endif %}
+          <a href="?page={{ page_obj.number }}" style="color: red">{{ page_obj.number }}</a>
+          {% if right %}
+            {% for i in right %}
+                <a href="?page={{ i }}">{{ i }}</a>
+            {% endfor %}
+            {% if right_has_more %}
+                <span>...</span>
+            {% endif %}
+          {% endif %}
+          {% if last %}
+            <a href="?page={{ paginator.num_pages }}">末页</a>
+          {% endif %}
+        </div>
+    {% endif %}
+    </div>
+{% endblock main %}
+
+    {% block about %}
+        <div class="about">
+            <div class="avatar"> <img src={% static 'blog/images/avatar.jpg' %} alt=""> </div>
+            <p class="abname">dancesmile | 图灵RT</p>
+            <p class="abposition">Web前端设计师、网页设计</p>
+            <div class="abtext"> 一个80后草根女站长！09年入行。一直潜心研究web前端技术，一边工作一边积累经验，分享一些个人博客模板，以及SEO优化等心得。 </div>
+        </div>
+        <!--搜索-->
+        <div class="search">
+            <form action="{% url 'haystack_search' %}" method="get" name="searchform" id="searchform">
+                <input name="q" id="keyboard" class="input_text" placeholder="请输入关键字" required style="color: rgb(153, 153, 153);" type="text">
+{#                <input name="show" value="title" type="hidden">#}
+{#                <input name="tempid" value="1" type="hidden">#}
+{#                <input name="tbname" value="news" type="hidden">#}
+                <input name="Submit" class="input_submit" value="搜索" type="submit">
+            </form>
+        </div>
+    {% endblock about %}

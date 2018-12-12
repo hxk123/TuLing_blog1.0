@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load highlight %}
+
+{% block main %}
+    {% if query %}
+    <div class="blogs">
+        {% for result in page.object_list %}
+            <li> <span class="blogpic"><a href="{{ result.object.get_absolute_url }}"><img src='{% static 'blog/images/text01.jpg' %}'></a></span>
+                <h3 class="blogtitle"><a href="{{ result.object.get_absolute_url }}">{% highlight result.object.title with query %}</a></h3>
+                <div class="bloginfo">
+                    <p>
+{#                        {{ result.object.excerpt }}...#}
+                    {% highlight result.object.body with query %}
+                    </p>
+                </div>
+            <div class="autor">
+                <span class="lm">
+                {% for tag in result.object.tags.all %}
+                    <a href="{% url 'blog:tag' tag.pk %}" target="_blank" class="classname">
+                        {{ tag.name }}
+                    </a>
+                                {% endfor %}
+
+                </span>
+                    <span class="dtime">{{ result.object.created_time }}</span><span class="viewnum">浏览（<a href="javascript:;">{{ result.object.views }}</a>）
+                    </span><span class="readmore">
+                        <a href="{{ result.object.get_absolute_url }}">阅读原文</a></span>
+            </div>
+            </li>
+
+        {% empty %}
+            <div class="no-post">没有搜索到你想要的结果！</div>
+        {% endfor %}
+{#        {% if page.has_previous or page.has_next %}#}
+{#            <div>#}
+{#                {% if page.has_previous %}#}
+{#                    <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous#}
+{#                {% if page.has_previous %}</a>{% endif %}#}
+{#                |#}
+{#                {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next#}
+{#                &raquo;{% if page.has_next %}</a>{% endif %}#}
+{#            </div>#}
+{#        {% endif %}#}
+    {% else %}
+        请输入搜索关键词，例如 django
+
+    {% endif %}
+        </div>
+
+{% endblock main %}
+

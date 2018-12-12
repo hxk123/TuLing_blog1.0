@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+<!-- 文章列表 -->
+{% block main %}
+    <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span>
+{#        <a href={% url 'blog:index' %} class="n1">网站首页</a>#}
+        <a href='#' class="n2">
+
+        </a>
+    </h1>
+    <div class="blogs">
+        <div class="mt20"></div>
+        {% for post in post_list %}
+            <li> <span class="blogpic"><a href="{{ post.get_absolute_url }}"><img src={% static 'blog/images/text01.jpg' %}></a></span>
+                <h3 class="blogtitle"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                <div class="bloginfo">
+                    <p>{{ post.excerpt }}</p>
+                </div>
+            <div class="autor"><span class="lm"><a href="#" class="classname">
+                {% for tag in tag_list %}
+            </a></span>
+                <span class="dtime">{{ post.created_time }}</span><span class="viewnum">浏览（<a href="/">0</a>）
+                </span><span class="readmore">
+                    <a href="{{ post.get_absolute_url }}">阅读原文</a></span>
+            </div>
+            </li>
+        {% empty %}
+            <div class="blogtitle">暂时还没有发布的文章！</div>
+        {% endfor %}
+
+{#    分页功能    #}
+        {% if is_paginated %}
+        <div class="pagelist">
+          {% if first %}
+            <a title="Total record" href="?page=1">首页</a>
+          {% endif %}
+          {% if left %}
+            {% if left_has_more %}
+                <span>...</span>
+            {% endif %}
+            {% for i in left %}
+                <a href="?page={{ i }}">{{ i }}</a>
+            {% endfor %}
+          {% endif %}
+          <a href="?page={{ page_obj.number }}" style="color: red">{{ page_obj.number }}</a>
+          {% if right %}
+            {% for i in right %}
+                <a href="?page={{ i }}">{{ i }}</a>
+            {% endfor %}
+            {% if right_has_more %}
+                <span>...</span>
+            {% endif %}
+          {% endif %}
+          {% if last %}
+            <a href="?page={{ paginator.num_pages }}">末页</a>
+          {% endif %}
+        </div>
+    {% endif %}
+    </div>
+{% endblock main %}
+
+{% block about %}
+    <!--搜索-->
+    <div class="search">
+        <form action="/e/search/index.php" method="post" name="searchform" id="searchform">
+            <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+            <input name="show" value="title" type="hidden">
+            <input name="tempid" value="1" type="hidden">
+            <input name="tbname" value="news" type="hidden">
+            <input name="Submit" class="input_submit" value="搜索" type="submit">
+        </form>
+    </div>
+
+    <div class="lmnav">
+      <h2 class="hometitle">栏目导航</h2>
+      <ul class="navbor">
+        <li><a href="#">关于我</a></li>
+        <li><a href="share.html">模板分享</a>
+          <ul>
+            <li><a href="list.html">个人博客模板</a></li>
+            <li><a href="#">HTML5模板</a></li>
+          </ul>
+        </li>
+        <li><a href="list.html">学无止境</a>
+          <ul>
+            <li><a href="list.html">学习笔记</a></li>
+            <li><a href="#">HTML5+CSS3</a></li>
+            <li><a href="#">网站建设</a></li>
+          </ul>
+        </li>
+        <li><a href="#">慢生活</a></li>
+      </ul>
+    </div>
+
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(function() {
+            var elm = jQuery('#left_flow2');
+            var startPos = jQuery(elm).offset().top;
+            jQuery.event.add(window, "scroll", function() {
+                var p = jQuery(window).scrollTop();
+                jQuery(elm).css('position',((p) > startPos) ? 'fixed' : '');
+
+                jQuery(elm).css('top',((p) > startPos) ? '0' : '');
+            });
+        });
+    </script>
+{% endblock about %}

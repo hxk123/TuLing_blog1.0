@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+
+{% block main %}
+    <style>
+    #id_text {
+    width: 70%;
+    font-size: 1.1em;
+    margin: 10px 0;
+    border: 1px solid #cccccc;
+    outline: none;
+    background: #fff;
+    height: 120px;
+    padding: 10px;
+    resize: none;
+}
+    #id_name, #id_email {
+    padding: 10px;
+    width: 30%;
+    font-size: 1.1em;
+    margin: 10px 0;
+    border: 1px solid #cccccc;
+    background: #fff;
+    outline: none;
+}
+    .comment-btn {
+    color: #FFF;
+    font-size: 1.1em;
+    font-weight: normal;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    background: #d8232a;
+    display: inline-block;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+    </style>
+<h1 class="t_nav">
+    <span>您现在的位置是：首页 > {{ post.category }} ></span><a href="{% url 'blog:index' %}" class="n1">网站首页</a>
+        <a href="javascript:;" class="n2">{{ post.category }}</a></h1>
+  <div class="infos">
+    <div class="newsview">
+      <h3 class="news_title">{{ post.title }}</h3>
+      <div class="news_author"><span class="au01"><a href='#'>{{ post.author }}</a></span><span class="au02">{{ post.created_time }}</span><span class="au03">共<b>{{ post.views }}</b>人阅读</span></div>
+      <div class="tags">
+          {% for tag in post.tags.all %}
+            <a href="{% url 'blog:tag' tag.pk %}" target="_blank">{{ tag.name }}</a>
+            {% endfor %}
+      </div>
+{#      <div class="news_about"><strong>简介</strong>个人博客，用来做什么？我刚开始就把它当做一个我吐槽心情的地方，也就相当于一个网络记事本，写上一些关于自己生活工作中的小情小事，也会放上一些照片，音乐。每天工作回家后就能访问自己的网站，一边听着音乐，一边写写文章。</div>#}
+
+        <div class="news_infos">
+            {{ post.body|safe }}
+            <img alt="" src="images/bi01.jpg"><br>
+        </div>
+    </div>
+    <div class="share"></div>
+
+{#      分页功能      #}
+  {% if is_paginated %}
+    <div class="nextinfo">
+    {% if page_obj.has_previous %}
+      <p>上一篇：<a href="?page={{ page_obj.previous_page_number }}">{{ post.title }}</a></p>
+        {% endif %}
+    {% if page_obj.has_next %}
+      <p>下一篇：<a href="?page={{ page_obj.next_page_number }}">{{ post.title }}</a></p>
+        {% endif %}
+    </div>
+  {% endif %}
+      <div class="news_pl">
+          <div style="margin-left: 10px;">
+              <h1>发表评论</h1>
+              <form action="{% url 'comments:post_comment' post.pk %}" method="post" class="comment-form">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div>
+{#                      <label for="{{ form.name.id_for_label }}"></label>#}
+                        名字：
+                      {{ form.name }}
+                      {{ form.name.errors }}
+                    </div>
+                    <div>
+{#                      <label for="{{ form.email.id_for_label }}">邮箱：</label>#}
+                        邮箱：
+                      {{ form.email }}
+                      {{ form.email.errors }}
+                    </div>
+                    <div>
+{#                      <label for="{{ form.text.id_for_label }}">评论：</label>#}
+                        <div>评论内容：</div>
+                      {{ form.text }}
+
+                      {{ form.text.errors }}
+                        <div>
+                            <button type="submit" class="comment-btn">发表</button>
+                        </div>
+
+                    </div>
+                  </div>    <!-- row -->
+                </form>
+          </div>
+      <h2>文章评论</h2>
+      <ul>
+        <div class="gbko">
+            <div class="l_box f_l" style="padding:20px;">
+        <div class="commentstitle">
+            <h3 id="comments">到现在<span class="commentsnumber">有{{ post.comment_set.count }}条评论</span></h3>
+        </div>
+        <ol class="commentlist">
+            <!--先遍历父级评论-->
+            {% for comment in comment_list %}
+            <li style="margin-bottom: 30px;">
+                <div class="top"><a href="#" class="url">{{ comment.name }}</a>
+                    <span class="time">
+                        <a href="#" title="">{{ comment.created_time }}</a>
+                    </span>
+                </div>
+{#                <div><img alt="" src="images/02.jpg" class="commentAvatar avatar-32 commentPhoto" height="32" width="32"></div>#}
+                <div class="body">
+                    <p>{{ comment.text }}</p>
+                </div>
+            </li>
+                {% empty %}
+                暂无评论
+            {% endfor %}
+        </ol>
+    </div>
+        </div>
+      </ul>
+      </div>
+
+
+
+  </div>
+{% endblock main %}
+
+<!--分类-->
+{% block about %}
+    <!--搜索-->
+    <div class="search">
+        <div class="search">
+            <form action="{% url 'haystack_search' %}" method="get" name="searchform" id="searchform">
+                <input name="q" id="keyboard" class="input_text" placeholder="请输入关键字" required style="color: rgb(153, 153, 153);" type="text">
+{#                <input name="show" value="title" type="hidden">#}
+{#                <input name="tempid" value="1" type="hidden">#}
+{#                <input name="tbname" value="news" type="hidden">#}
+                <input name="Submit" class="input_submit" value="搜索" type="submit">
+            </form>
+        </div>
+    </div>
+
+    <div class="lmnav">
+      <h2 class="hometitle">栏目导航</h2>
+      <ul class="navbor">
+        <li><a href="javascript:;">关于我</a></li>
+        <li><a href="javascript:;">模板分享</a>
+          <ul>
+            <li><a href="javascript:;">个人博客模板</a></li>
+            <li><a href="javascript:;">HTML5模板</a></li>
+          </ul>
+        </li>
+        <li><a href="javascript:;">学无止境</a>
+          <ul>
+            <li><a href="javascript:;">学习笔记</a></li>
+            <li><a href="javascript:;">HTML5+CSS3</a></li>
+            <li><a href="javascript:;">网站建设</a></li>
+          </ul>
+        </li>
+        <li><a href="javascript:;">慢生活</a></li>
+      </ul>
+    </div>
+
+    <script type="text/javascript">
+        jQuery.noConflict();
+        jQuery(function() {
+            var elm = jQuery('#left_flow2');
+            var startPos = jQuery(elm).offset().top;
+            jQuery.event.add(window, "scroll", function() {
+                var p = jQuery(window).scrollTop();
+                jQuery(elm).css('position',((p) > startPos) ? 'fixed' : '');
+
+                jQuery(elm).css('top',((p) > startPos) ? '0' : '');
+            });
+        });
+    </script>
+{% endblock about %}
+
+
+{#    <div class="otherlink">#}
+{#      <h2>相关文章</h2>#}
+{#      <ul>#}
+{#        <li><a href="/download/div/2018-04-22/815.html" title="html5个人博客模板《黑色格调》">html5个人博客模板《黑色格调》</a></li>#}
+{#      </ul>#}
+{#    </div>#}
+
