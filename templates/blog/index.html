@@ -3,27 +3,27 @@
 {% block lunbo %}
     <div class="picshow">
       <ul>
-        <li><a href="javascript:;"><i><img src={% static 'blog/images/b01.jpg' %}></i>
+        <li><a href="javascript:;"><i><img src="{% static 'blog/images/b01.jpg' %}"></i>
           <div class="font">
             <h3>个人博客《早安》</h3>
           </div>
           </a></li>
-        <li><a href="javascript:;"><i><img src={% static 'blog/images/b02.jpg' %}></i>
+        <li><a href="javascript:;"><i><img src="{% static 'blog/images/b02.jpg' %}"></i>
           <div class="font">
             <h3>个人博客《早安》</h3>
           </div>
           </a></li>
-        <li><a href="javascript:;"><i><img src={% static 'blog/images/b03.jpg' %}></i>
+        <li><a href="javascript:;"><i><img src="{% static 'blog/images/b03.jpg' %}"></i>
           <div class="font">
             <h3>个人博客《早安》</h3>
           </div>
           </a></li>
-        <li><a href="javascript:;"><i><img src={% static 'blog/images/b04.jpg' %}></i>
+        <li><a href="javascript:;"><i><img src="{% static 'blog/images/b04.jpg' %}"></i>
           <div class="font">
             <h3>个人博客《早安》</h3>
           </div>
           </a></li>
-        <li><a href="javascript:;"><i><img src={% static 'blog/images/b05.jpg' %}></i>
+        <li><a href="javascript:;"><i><img src="{% static 'blog/images/b05.jpg' %}"></i>
           <div class="font">
             <h3>个人博客《早安》</h3>
           </div>
@@ -36,7 +36,7 @@
 {% block main %}
     <div class="blogs">
         {% for post in post_list %}
-            <li> <span class="blogpic"><a href="{{ post.get_absolute_url }}"><img src={% static 'blog/images/text01.jpg' %}></a></span>
+            <li> <span class="blogpic"><a href="{{ post.get_absolute_url }}"><img src="{% static 'blog/images/text01.jpg' %}"></a></span>
                 <h3 class="blogtitle"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
                 <div class="bloginfo">
                     <p>{{ post.excerpt }}...</p>
@@ -90,7 +90,7 @@
 
     {% block about %}
         <div class="about">
-            <div class="avatar"> <img src={% static 'blog/images/avatar.jpg' %} alt=""> </div>
+            <div class="avatar"> <img src="{% static 'blog/images/avatar.jpg' %}" alt=""> </div>
             <p class="abname">dancesmile | 图灵RT</p>
             <p class="abposition">Web前端设计师、网页设计</p>
             <div class="abtext"> 一个80后草根女站长！09年入行。一直潜心研究web前端技术，一边工作一边积累经验，分享一些个人博客模板，以及SEO优化等心得。 </div>

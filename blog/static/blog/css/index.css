@@ -1,4 +1,5 @@
- @charset "gb2312";
+ @charset "UTF-8";
+
 .picshow { width: 100%; overflow: hidden; margin: 20px auto; }
 .picshow li { width: 20%; display: inline-block; float: left; overflow: hidden; position: relative; }
 .picshow li i { overflow: hidden; display: block; height: 400px; }

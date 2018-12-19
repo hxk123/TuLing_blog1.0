@@ -46,12 +46,12 @@ class Post(models.Model):
     views = models.PositiveIntegerField(default=0)
 
     # 这是分类与标签
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category)
     tags = models.ManyToManyField(Tag, blank=True)
 
     # 文章作者，这里 User 是从 django.contrib.auth.models 导入的。
     # 一篇文章只能有一个作者，而一个作者可能会写多篇文章，因此这是一对多的关联关系，和 Category 类似。
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User)
 
     def __str__(self):
         return self.title
